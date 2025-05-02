@@ -12,8 +12,8 @@ def create_pipeline(**kwargs) -> Pipeline:
             ),
             node(
                 func=preprocess_data,
-                inputs=dict(data="raw_train_data", output_dir="yolo_output_dir"),
-                outputs=None,
+                inputs="raw_train_data",
+                outputs="yolo_output_dir",
                 name="preprocess_train_data_node",
             ),
         ]

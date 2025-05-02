@@ -18,16 +18,17 @@ def load_data(file_path: str) -> pd.DataFrame:
     return data
 
 
-def preprocess_data(data: pd.DataFrame, output_dir: str) -> None:
+def preprocess_data(data: pd.DataFrame) -> dict:
     """
     Preprocess data and convert it to YOLO format.
 
     Args:
         data (pd.DataFrame): Input data as a pandas DataFrame.
-        output_dir (str): Directory to save the YOLO-formatted data.
+
+    Returns:
+        dict: A dictionary where keys are filenames and values are DataFrames.
     """
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
+    yolo_data = {}
 
     # Convert data to YOLO format
     for index, row in data.iterrows():
@@ -37,9 +38,14 @@ def preprocess_data(data: pd.DataFrame, output_dir: str) -> None:
         width = (row["Roi.X2"] - row["Roi.X1"]) / row["Width"]
         height = (row["Roi.Y2"] - row["Roi.Y1"]) / row["Height"]
 
-        yolo_format = f"{row['ClassId']} {x_center} {y_center} {width} {height}\n"
-        output_file = os.path.join(output_dir, f"{os.path.splitext(row['Path'])[0]}.txt")
-        with open(output_file, "w") as f:
-            f.write(yolo_format)
-    print(f"Data preprocessed and saved to {output_dir}")
+        yolo_format = pd.DataFrame(
+            [[row['ClassId'], x_center, y_center, width, height]],
+            columns=["ClassId", "x_center", "y_center", "width", "height"]
+        )
+
+        # Use the image path (without extension) as the key
+        filename = os.path.splitext(row["Path"])[0]
+        yolo_data[filename] = yolo_format
+
+    return yolo_data
 
