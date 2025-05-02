@@ -1,28 +1,20 @@
-from kedro.pipeline import Pipeline, node, pipeline
-
-from .nodes import create_model_input_table, preprocess_companies, preprocess_shuttles
-
+from kedro.pipeline import Pipeline, node
+from .nodes import load_data, preprocess_data
 
 def create_pipeline(**kwargs) -> Pipeline:
-    return pipeline(
+    return Pipeline(
         [
             node(
-                func=preprocess_companies,
-                inputs="companies",
-                outputs="preprocessed_companies",
-                name="preprocess_companies_node",
+                func=load_data,
+                inputs="params:train_csv_path",
+                outputs="raw_train_data",
+                name="load_train_data_node",
             ),
             node(
-                func=preprocess_shuttles,
-                inputs="shuttles",
-                outputs="preprocessed_shuttles",
-                name="preprocess_shuttles_node",
-            ),
-            node(
-                func=create_model_input_table,
-                inputs=["preprocessed_shuttles", "preprocessed_companies", "reviews"],
-                outputs="model_input_table",
-                name="create_model_input_table_node",
+                func=preprocess_data,
+                inputs=dict(data="raw_train_data", output_dir="yolo_output_dir"),
+                outputs=None,
+                name="preprocess_train_data_node",
             ),
         ]
     )

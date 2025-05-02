@@ -36,7 +36,12 @@
 #    # if_exists: 'append'
 #
 
+raw_train_data:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/Train.csv
 
-gtsrb:
-  type: pandas.
-  filepath: data/01_raw/gtsrb.csv
+yolo_output_dir:
+  type: pandas.CSVDataset
+  filepath: data/02_intermediate/yolo_format/{filename}
+  save_args:
+    index: False

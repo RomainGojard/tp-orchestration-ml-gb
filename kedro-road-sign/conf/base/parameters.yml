@@ -1,2 +1,3 @@
-dataset_name: "meowmeowmeowmeowmeow/gtsrb-german-traffic-sign"
 download_path: "data/01_raw/gtsrb"
+train_csv_path: "data/01_raw/Train.csv"
+yolo_output_dir: "data/02_intermediate/yolo_format"
