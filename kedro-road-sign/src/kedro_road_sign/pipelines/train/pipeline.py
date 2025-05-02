@@ -1,19 +1,14 @@
-from kedro.pipeline import Pipeline, node
-from .nodes import train_yolo_model
+# src/my_project/pipelines/yolo_pipeline/pipeline.py
+
+from kedro.pipeline import Pipeline, node, pipeline
+from .nodes import train_yolov8  # ❌ enlever preprocess_data
 
 def create_pipeline(**kwargs) -> Pipeline:
-    return Pipeline(
-        [
-            node(
-                func=train_yolo_model,
-                inputs=dict(
-                    data_dir="params:yolo_data_dir",
-                    model_config="params:yolo_model_config",
-                    epochs="params:yolo_epochs",
-                    output_dir="params:trained_yolo_model_path",
-                ),
-                outputs="trained_yolo_model_path",
-                name="train_yolo_model_node",
-            ),
-        ]
-    )
+    return pipeline([
+        node(
+            func=train_yolov8,
+            inputs="params:data_config_path",
+            outputs="training_output",
+            name="train_yolov8_node",
+        ),
+    ])

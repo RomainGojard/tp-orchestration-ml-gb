@@ -1,7 +1,2 @@
-download_path: "data/01_raw/gtsrb"
-train_csv_path: "data/01_raw/Train.csv"
-yolo_output_dir: "data/02_intermediate/yolo_format"
-yolo_data_dir: "data/02_intermediate/yolo_format"
-yolo_model_config: "yolov8n.pt"
-yolo_epochs: 50  # Nombre d'époques pour l'entraînement
-trained_yolo_model_path: "data/06_models/yolo"
+# path du data yaml
+data_config_path: "data/01_raw/data.yaml"

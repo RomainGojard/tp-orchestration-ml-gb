@@ -1,20 +1,29 @@
-from kedro.pipeline import Pipeline, node
-from .nodes import load_data, preprocess_data
+from kedro.pipeline import Pipeline, node, pipeline
+from .nodes import process_labels
+from pathlib import Path
 
 def create_pipeline(**kwargs) -> Pipeline:
-    return Pipeline(
-        [
-            node(
-                func=load_data,
-                inputs="params:train_csv_path",
-                outputs="raw_train_data",
-                name="load_train_data_node",
+    return pipeline([
+        node(
+            func=process_labels,
+            inputs=dict(
+                csv_path="train_csv",
+                image_base_path="raw_data_dir",
+                output_dir="processed_data_dir",
+                subset="params:train_subset"
             ),
-            node(
-                func=preprocess_data,
-                inputs="raw_train_data",
-                outputs="yolo_output_dir",
-                name="preprocess_train_data_node",
+            outputs=None,
+            name="process_train_labels"
+        ),
+        node(
+            func=process_labels,
+            inputs=dict(
+                csv_path="test_csv",
+                image_base_path="raw_data_dir",
+                output_dir="processed_data_dir",
+                subset="params:test_subset"
             ),
-        ]
-    )
+            outputs=None,
+            name="process_test_labels"
+        )
+    ])
