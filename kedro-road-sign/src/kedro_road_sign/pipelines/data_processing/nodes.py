@@ -1,68 +1,39 @@
 import pandas as pd
+import os
 
-
-def _is_true(x: pd.Series) -> pd.Series:
-    return x == "t"
-
-
-def _parse_percentage(x: pd.Series) -> pd.Series:
-    x = x.str.replace("%", "")
-    x = x.astype(float) / 100
-    return x
-
-
-def _parse_money(x: pd.Series) -> pd.Series:
-    x = x.str.replace("$", "").str.replace(",", "")
-    x = x.astype(float)
-    return x
-
-
-def preprocess_companies(companies: pd.DataFrame) -> pd.DataFrame:
-    """Preprocesses the data for companies.
+def load_data(file_path: str) -> pd.DataFrame:
+    """
+    Load data from a  file.
 
     Args:
-        companies: Raw data.
+        file_path (str): Path to the CSV file.
+
     Returns:
-        Preprocessed data, with `company_rating` converted to a float and
-        `iata_approved` converted to boolean.
+        pd.DataFrame: Loaded data as a pandas DataFrame.
     """
-    companies["iata_approved"] = _is_true(companies["iata_approved"])
-    companies["company_rating"] = _parse_percentage(companies["company_rating"])
-    return companies
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"File not found: {file_path}")
+    data = pd.read_csv(file_path)
+    print(f"Data loaded from {file_path}")
+    return data
 
 
-def preprocess_shuttles(shuttles: pd.DataFrame) -> pd.DataFrame:
-    """Preprocesses the data for shuttles.
+def preprocess_data(data: pd.DataFrame, output_dir: str) -> None:
+    """
+    Preprocess data and convert it to YOLO format.
 
     Args:
-        shuttles: Raw data.
-    Returns:
-        Preprocessed data, with `price` converted to a float and `d_check_complete`,
-        `moon_clearance_complete` converted to boolean.
+        data (pd.DataFrame): Input data as a pandas DataFrame.
+        output_dir (str): Directory to save the YOLO-formatted data.
     """
-    shuttles["d_check_complete"] = _is_true(shuttles["d_check_complete"])
-    shuttles["moon_clearance_complete"] = _is_true(shuttles["moon_clearance_complete"])
-    shuttles["price"] = _parse_money(shuttles["price"])
-    return shuttles
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
 
+    # Example conversion to YOLO format
+    for index, row in data.iterrows():
+        yolo_format = f"{row['class']} {row['x_center']} {row['y_center']} {row['width']} {row['height']}\n"
+        output_file = os.path.join(output_dir, f"{row['image_id']}.txt")
+        with open(output_file, "w") as f:
+            f.write(yolo_format)
+    print(f"Data preprocessed and saved to {output_dir}")
 
-def create_model_input_table(
-    shuttles: pd.DataFrame, companies: pd.DataFrame, reviews: pd.DataFrame
-) -> pd.DataFrame:
-    """Combines all data to create a model input table.
-
-    Args:
-        shuttles: Preprocessed data for shuttles.
-        companies: Preprocessed data for companies.
-        reviews: Raw data for reviews.
-    Returns:
-        Model input table.
-
-    """
-    rated_shuttles = shuttles.merge(reviews, left_on="id", right_on="shuttle_id")
-    rated_shuttles = rated_shuttles.drop("id", axis=1)
-    model_input_table = rated_shuttles.merge(
-        companies, left_on="company_id", right_on="id"
-    )
-    model_input_table = model_input_table.dropna()
-    return model_input_table
