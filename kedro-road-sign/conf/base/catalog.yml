@@ -41,7 +41,8 @@ raw_train_data:
   filepath: data/01_raw/Train.csv
 
 yolo_output_dir:
-  type: kedro.io.MemoryDataset
+  type: pandas.CSVDataset
+  filepath: data/02_intermediate/yolo_format
 
 trained_yolo_model_path:
   type: kedro.io.MemoryDataset
