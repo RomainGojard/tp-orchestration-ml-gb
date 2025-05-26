@@ -1,2 +1,11 @@
 # path du data yaml
 data_config_path: "data/01_raw/data.yaml"
+
+# path du model entrainé
+trained_model_path: "data/06_models/best.pt"
+
+# path du data.yaml
+data_yaml_path: "data/01_raw/data.yaml"
+
+# path evaluation metrics
+yolo_evaluation_metrics: "data/07_evaluation/yolo_evaluation_metrics.json"
