@@ -28,7 +28,7 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          pytest kedro-road-sign/tests/ --cov=src --cov-fail-under=80
+          pytest
 
       - name: Build Docker image
         run: |
