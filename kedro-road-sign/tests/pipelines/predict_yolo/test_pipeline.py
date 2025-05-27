@@ -1,6 +1,6 @@
 """
-This is a boilerplate test file for pipeline 'data_processing'
-generated using Kedro 0.19.11.
+This is a boilerplate test file for pipeline 'predict_yolo'
+generated using Kedro 0.19.13.
 Please add your pipeline tests here.
 
 Kedro recommends using `pytest` framework, more info about it can be found

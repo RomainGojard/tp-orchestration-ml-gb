@@ -5,19 +5,33 @@ data_config_path: "data/01_raw/data.yaml"
 trained_model_path: "data/06_models/best.pt"
 
 # path evaluation metrics
-yolo_evaluation_metrics: "data/07_evaluation/yolo_evaluation_metrics.json"
+yolo_evaluation_metrics: "data/08_evaluation/yolo_evaluation_metrics.json"
 
 # param for ocr
 ocr_lang: "fra"
 
 # param for labels
-labels_path: "data/01_raw/labels/val"
+labels_use_case_path: "data/01_raw/labels/use_case"
 
 # param for images
-images_path: "data/01_raw/images/val"
+images_path: "data/01_raw/images/use_case"
 
-# param for ocr_rois
-ocr_rois: "data/03_primary/ocr_rois.json"
+# images_path_ocr
+images_path_ocr: "data/01_raw/images/use_case"
+
+# path for preprocessed images
+images_path_preprocessed: "data/05_model_input/images_preprocessed"
+
+images_yolo_predict_input_path: "data/01_raw/images/val"
 
 # cmd local path
 cmd_local_path: "/opt/homebrew/bin/tesseract"
+
+# model path
+model_path: "data/06_models/best.pt"
+
+# predict yolo output
+yolo_predict_output_dir: "data/07_model_output/yolo_predictions"
+
+# predict results
+labels_input: "data/05_model_input/labels_input"

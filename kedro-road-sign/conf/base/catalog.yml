@@ -1,3 +1,20 @@
+data_config: 
+  type: yaml.YAMLDataset
+  filepath: "data/01_raw/data.yaml"
+
 training_output:
   type: json.JSONDataset
   filepath: data/06_models/train_result.json
+
+ocr_rois: 
+  type: json.JSONDataset
+  filepath: data/03_primary/ocr_rois.json
+
+
+ocr_metrics:
+  type: json.JSONDataset
+  filepath: data/08_evaluation/ocr_metrics.json
+
+yolo_predictions:
+  type: pickle.PickleDataset
+  filepath: data/07_model_output/predictions.pkl

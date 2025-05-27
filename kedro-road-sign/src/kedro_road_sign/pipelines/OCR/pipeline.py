@@ -6,11 +6,12 @@ def create_pipeline(**kwargs) -> Pipeline:
         node(
             func=prepare_ocr_data,
             inputs=dict(
-                labels_path="params:labels_path",
-                images_path="params:images_path",
-                data_config_path="params:data_config_path"
+                labels_path="params:labels_input",
+                images_path="params:images_path_ocr",
+                images_path_preprocessed="params:images_path_preprocessed",
+                data_config="data_config"
             ),
-            outputs="params:ocr_rois",
+            outputs="ocr_rois",
             name="prepare_ocr_data_node"
         ),
         node(
@@ -24,7 +25,7 @@ def create_pipeline(**kwargs) -> Pipeline:
         node(
             func=evaluate_ocr,
             inputs=dict(
-                rois="params:ocr_rois",
+                rois="ocr_rois",
                 lang="params:ocr_lang"
             ),
             outputs="ocr_metrics",
