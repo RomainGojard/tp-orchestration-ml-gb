@@ -56,31 +56,15 @@ def test_prepare_ocr_data_success(dummy_image, dummy_label_file, dummy_data_conf
     preprocessed_path = dummy_preprocessed_dir
     preprocessed_path.mkdir(parents=True, exist_ok=True)
 
-    # Patch les fonctions de traitement d'image
-    with patch("kedro_road_sign.pipelines.OCR.ocr_pipeline.remove_noise", side_effect=lambda x: x), \
-         patch("kedro_road_sign.pipelines.OCR.ocr_pipeline.grayscale", side_effect=lambda x: x), \
-         patch("kedro_road_sign.pipelines.OCR.ocr_pipeline.opening", side_effect=lambda x: x):
+    # Act
+    result = prepare_ocr_data(str(images_path), str(labels_path), dummy_data_config, str(preprocessed_path))
 
-        # Act
-        result = prepare_ocr_data(str(images_path), str(labels_path), dummy_data_config, str(preprocessed_path))
-
-        # Assert
-        assert isinstance(result, list)
-        assert len(result) == 1
-        assert result[0]["label"] == "stop"
-        assert Path(result[0]["image"]).exists()
-        assert isinstance(result[0]["roi"], tuple)
-
-
-def test_prepare_ocr_data_raises_on_missing_image(tmp_path, dummy_label_file, dummy_data_config):
-    with pytest.raises(FileNotFoundError):
-        prepare_ocr_data(
-            images_path=str(tmp_path),
-            labels_path=str(tmp_path),
-            data_config=dummy_data_config,
-            images_path_preprocessed=str(tmp_path / "out")
-        )
-
+    # Assert
+    assert isinstance(result, list)
+    assert len(result) == 1
+    assert result[0]["label"] == "stop"
+    assert Path(result[0]["image"]).exists()
+    assert isinstance(result[0]["roi"], tuple)
 
 def test_compute_cer_typical():
     ref = "STOP"

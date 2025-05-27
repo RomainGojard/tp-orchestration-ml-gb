@@ -4,7 +4,7 @@ from typing import List, Dict
 from difflib import SequenceMatcher
 from pathlib import Path
 import yaml, json
-from ocr_functions_utilities import *
+from src.ocr_functions_utilities import *
 
 def prepare_ocr_data(images_path: str, labels_path: str, data_config: Dict, images_path_preprocessed: str) -> List:
     """Extrait les ROI 'panneaux' des images selon les prédictions du modèle YOLO."""
