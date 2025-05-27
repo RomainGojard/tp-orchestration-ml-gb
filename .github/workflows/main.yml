@@ -23,7 +23,7 @@ jobs:
         run: |
           sudo apt-get update
           pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r kedro-road-sign/requirements.txt
           pip install pytest pytest-cov
 
       - name: Run tests with coverage
