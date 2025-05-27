@@ -4,9 +4,6 @@ data_config_path: "data/01_raw/data.yaml"
 # path du model entrainé
 trained_model_path: "data/06_models/best.pt"
 
-# path evaluation metrics
-yolo_evaluation_metrics: "data/08_evaluation/yolo_evaluation_metrics.json"
-
 # param for ocr
 ocr_lang: "fra"
 

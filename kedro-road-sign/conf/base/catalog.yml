@@ -15,6 +15,11 @@ ocr_metrics:
   type: json.JSONDataset
   filepath: data/08_evaluation/ocr_metrics.json
 
+
+yolo_evaluation_metrics: 
+  type: json.JSONDataset
+  filepath: data/08_evaluation/yolo_evaluation_metrics.json
+
 yolo_predictions:
   type: pickle.PickleDataset
   filepath: data/07_model_output/predictions.pkl

@@ -9,7 +9,7 @@ def create_pipeline(**kwargs) -> Pipeline:
                 model_path="params:trained_model_path",  # un fichier .pt
                 data_yaml_path="params:data_yaml_path"  # un fichier YAML
             ),
-            outputs="params:yolo_evaluation_metrics",
+            outputs="yolo_evaluation_metrics",
             name="evaluate_yolov8_node",
         ),
     ])

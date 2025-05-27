@@ -22,6 +22,9 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
+@app.route('/')
+def index():
+    return jsonify({"message": "Welcome to the Kedro Road Sign API!"})
 
 @app.route('/run-pipeline', methods=['POST'])
 def run_pipeline():
@@ -67,4 +70,5 @@ def run_pipeline():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=8000)
+

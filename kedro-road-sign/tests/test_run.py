@@ -17,4 +17,5 @@ class TestKedroRun:
         bootstrap_project(Path.cwd())
 
         with KedroSession.create(project_path=Path.cwd()) as session:
-            assert session.run() is not None
+            assert session.run(tags=["debug"])  # Ou session.run() tout court avec logs activés
+
