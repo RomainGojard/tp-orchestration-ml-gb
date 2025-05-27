@@ -17,7 +17,7 @@ jobs:
     - name: Setup Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.13' # base: 3.10
+        python-version: '3.13.2' # base: 3.10
 
     - name: Install dependencies
       run: |
@@ -32,15 +32,14 @@ jobs:
     
     - name: Build Docker image
       run: |
-        docker build -t youruser/yolov8-10_ocr_app:latest . # il faut changer l'user
+        docker build -t rgojard/kedro-road-sign:latest .
 
     - name: Login to DockerHub
       if: success() # on ne se connecte que si les tests ont reussi
       run: |
         echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
-        # ! il faut créer les secrets DOCKERHUB_USERNAME et DOCKERHUB_PASSWORD dans les paramètres du repo GitHub.
 
     - name: Push Docker image
       if: success() # on ne push que si success
       run: |
-        docker push youruser/yolov8-10_ocr_app:latest
+        docker push rgojard/kedro-road-sign:latest
