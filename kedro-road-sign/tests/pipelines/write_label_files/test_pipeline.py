@@ -1,52 +1,65 @@
-"""
-This is a boilerplate test file for pipeline 'write_label_files'
-generated using Kedro 0.19.13.
-Please add your pipeline tests here.
-
-Kedro recommends using `pytest` framework, more info about it can be found
-in the official documentation:
-https://docs.pytest.org/en/latest/getting-started.html
-"""
-import unittest
+import pytest
 import tempfile
-from pathlib import Path
 import os
+from pathlib import Path
 from src.kedro_road_sign.pipelines.write_label_files.nodes import empty_input_model_folder, copy_files
 
-def test_empty_input_model_folder_creates_empty_folder(self):
-  with tempfile.TemporaryDirectory() as tmpdir:
-    test_dir = Path(tmpdir) / "to_empty"
-    test_dir.mkdir()
 
-    # Ajouter des fichiers pour simuler du contenu
-    (test_dir / "dummy.txt").write_text("test")
+def test_empty_input_model_folder_creates_folder():
+    with tempfile.TemporaryDirectory() as tmpdir:
+        test_folder = Path(tmpdir) / "to_empty"
+        test_folder.mkdir()
 
-    # Appel de la fonction
-    result = empty_input_model_folder(str(test_dir))
+        # Ajouter un fichier pour simuler du contenu existant
+        dummy_file = test_folder / "dummy.txt"
+        dummy_file.write_text("Some content")
+        assert dummy_file.exists()
 
-    # Le dossier doit exister mais être vide
-    self.assertEqual(result, "folder_emptied")
-    self.assertTrue(test_dir.exists())
-    self.assertEqual(len(list(test_dir.iterdir())), 0)
+        # Appel de la fonction
+        result = empty_input_model_folder(str(test_folder))
 
-def test_copy_files_copies_non_empty_txt(self):
-  with tempfile.TemporaryDirectory() as tmpdir:
-    src = Path(tmpdir) / "src"
-    dst = Path(tmpdir) / "dst"
-    src.mkdir()
-    dst.mkdir()
+        # Le dossier doit exister mais être vide
+        assert result == "folder_emptied"
+        assert test_folder.exists()
+        assert list(test_folder.iterdir()) == []
 
-    # Fichier non vide (doit être copié)
-    (src / "file1.txt").write_text("contenu")
-    # Fichier vide (ne doit PAS être copié)
-    (src / "file2.txt").write_text("")
 
-    # Appel de la fonction
-    copy_files(str(src), str(dst))
+def test_empty_input_model_folder_creates_if_not_exists():
+    with tempfile.TemporaryDirectory() as tmpdir:
+        test_folder = Path(tmpdir) / "does_not_exist"
 
-    copied_files = list(dst.glob("*.txt"))
-    copied_filenames = [f.name for f in copied_files]
+        # Le dossier n'existe pas avant
+        assert not test_folder.exists()
 
-    self.assertIn("file1.txt", copied_filenames)
-    self.assertNotIn("file2.txt", copied_filenames)
-    self.assertEqual(len(copied_filenames), 1)
+        result = empty_input_model_folder(str(test_folder))
+
+        assert result == "folder_emptied"
+        assert test_folder.exists()
+        assert list(test_folder.iterdir()) == []
+
+
+def test_copy_files_copies_only_non_empty_txt_files():
+    with tempfile.TemporaryDirectory() as tmpdir:
+        source = Path(tmpdir) / "src"
+        destination = Path(tmpdir) / "dest"
+        source.mkdir()
+        destination.mkdir()
+
+        # Fichier texte non vide (doit être copié)
+        (source / "file1.txt").write_text("content")
+
+        # Fichier texte vide (ne doit PAS être copié)
+        (source / "file2.txt").write_text("")
+
+        # Fichier avec une autre extension (ne doit pas être copié)
+        (source / "file3.csv").write_text("some,data")
+
+        copy_files(str(source), str(destination))
+
+        copied_files = list(destination.glob("*"))
+        copied_names = [f.name for f in copied_files]
+
+        assert "file1.txt" in copied_names
+        assert "file2.txt" not in copied_names
+        assert "file3.csv" not in copied_names
+        assert len(copied_names) == 1
