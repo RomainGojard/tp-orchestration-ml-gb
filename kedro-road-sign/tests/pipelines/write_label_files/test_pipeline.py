@@ -11,7 +11,7 @@ import unittest
 import tempfile
 from pathlib import Path
 import os
-from src.kedro_road_sign.pipelines.write_label_files import empty_input_model_folder, copy_files
+from src.kedro_road_sign.pipelines.write_label_files.nodes import empty_input_model_folder, copy_files
 
 def test_empty_input_model_folder_creates_empty_folder(self):
   with tempfile.TemporaryDirectory() as tmpdir:
