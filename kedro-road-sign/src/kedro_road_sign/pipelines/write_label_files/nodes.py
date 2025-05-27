@@ -4,10 +4,9 @@ generated using Kedro 0.19.13
 """
 from pathlib import Path
 import shutil
+import os
 
 def empty_input_model_folder(folder_path: str) -> str:
-    import shutil
-    import os
 
     if os.path.exists(folder_path):
         shutil.rmtree(folder_path)
