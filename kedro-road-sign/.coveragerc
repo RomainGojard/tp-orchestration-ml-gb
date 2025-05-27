@@ -1,0 +1,3 @@
+[run]
+omit =
+    src/kedro_road_sign/__main__.py
