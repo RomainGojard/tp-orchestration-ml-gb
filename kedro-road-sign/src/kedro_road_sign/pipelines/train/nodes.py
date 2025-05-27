@@ -1,5 +1,3 @@
-# src/my_project/pipelines/yolo_pipeline/nodes.py
-
 from ultralytics import YOLO
 from pathlib import Path
 import logging
