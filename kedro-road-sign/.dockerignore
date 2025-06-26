@@ -20,6 +20,8 @@ references
 results
 
 # except the following
+!data/01_raw/data.yaml
+!data/06_models/best.pt
 !logs/.gitkeep
 !notebooks/.gitkeep
 !references/.gitkeep

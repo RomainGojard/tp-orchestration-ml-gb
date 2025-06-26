@@ -4,7 +4,6 @@ from typing import List, Dict
 from difflib import SequenceMatcher
 from pathlib import Path
 import yaml, json
-from src.ocr_functions_utilities import *
 
 def prepare_ocr_data(images_path: str, labels_path: str, data_config: Dict, images_path_preprocessed: str) -> List:
     """Extrait les ROI 'panneaux' des images selon les prédictions du modèle YOLO."""
@@ -103,3 +102,67 @@ def compute_cer(ref: str, hyp: str) -> int:
     """Calcule le nombre d'erreurs pour CER (Character Error Rate)."""
     matcher = SequenceMatcher(None, ref, hyp)
     return int(sum([max(i2 - i1, j2 - j1) for tag, i1, i2, j1, j2 in matcher.get_opcodes() if tag != 'equal']))
+
+
+### OCR Functions Utilities ###
+
+import cv2
+import numpy as np
+
+# grayscale
+def grayscale(image):
+	return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+# noise removal
+def remove_noise(image):
+	return cv2.medianBlur(image, 5)
+
+# thresholding
+def thresholding(image):
+	return cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
+
+# dilation
+def dilate(image):
+	kernel = np.ones((5, 5), np.uint8)
+	return cv2.dilate(image, kernel, iterations=1)
+
+# erosion
+def erode(image):
+	kernel = np.ones((5, 5), np.uint8)
+	return cv2.erode(image, kernel, iterations=1)
+
+# opening - erosion followed by dilation
+def opening(image):
+	kernel = np.ones((5, 5), np.uint8)
+	return cv2.morphologyEx(image, cv2.MORPH_OPEN, kernel)
+
+# canny edge detection
+def canny(image):
+	return cv2.Canny(image, 100, 200)
+
+# skew correction
+def deskew(image):
+	coords = np.column_stack(np.where(image > 0))
+	angle = cv2.minAreaRect(coords)[-1]
+	if angle < -45:
+		angle = -(90 + angle)
+	else:
+		angle = -angle
+	(h, w) = image.shape[:2]
+	center = (w // 2, h // 2)
+	M = cv2.getRotationMatrix2D(center, angle, 1.0)
+	rotated = cv2.warpAffine(image, M, (w, h), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
+	return rotated
+
+# template matching
+def match_template(image, template):
+	return cv2.matchTemplate(image, template, cv2.TM_CCOEFF_NORMED)
+
+# Rouge "faible" (proche de 0° sur le cercle HSV)
+lower_red1 = np.array([0, 70, 50])
+upper_red1 = np.array([10, 255, 255])
+
+# Rouge "fort" (proche de 180° sur le cercle HSV)
+lower_red2 = np.array([170, 70, 50])
+upper_red2 = np.array([180, 255, 255])
+

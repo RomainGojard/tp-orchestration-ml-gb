@@ -41,6 +41,6 @@ jobs:
           echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
       - name: Push Docker image
-        if: success() # on ne push que si success
+        if: success() # on ne push que si success 
         run: |
           docker push rgojard/kedro-road-sign:latest
