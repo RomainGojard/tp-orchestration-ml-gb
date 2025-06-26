@@ -1,7 +1,9 @@
-version: "3.8"
+version: "3.13.2"
 
 services:
   kedro:
+    # image: rgojard/tp-orchestration-ml:latest
+    # container_name: back-end
     build:
       context: ./kedro-road-sign
       dockerfile: Dockerfile
@@ -10,7 +12,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - KEDRO_ENV=local
+      - KEDRO_ENV=local # =development
     depends_on:
       - kedro
 
