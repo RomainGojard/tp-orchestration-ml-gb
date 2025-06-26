@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: yolov8-10-ocr-service # Doit matcher avec les vues externes
+  labels:
+    app: yolov8-ocr
+spec:
+  type: LoadBalancer # Expose sur IP externe / NodePort en local
+  selector:
+    app: yolov8-ocr # Lie le service aux pods marqués app=yolov8-ocr
+  ports:
+  - protocol: TCP
+    port: 80 # Port exposé à l’extérieur du cluster
+    targetPort: 5000 # Port sur lequel tourne Flask dans le pod
