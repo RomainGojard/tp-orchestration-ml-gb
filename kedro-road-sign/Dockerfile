@@ -29,4 +29,5 @@ COPY --chown=${KEDRO_UID}:${KEDRO_GID} . .
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "kedro run || python app.py"]
+#CMD ["sh", "-c", "kedro run"]
+CMD ["python", "app.py"]

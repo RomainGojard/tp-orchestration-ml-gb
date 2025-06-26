@@ -2,25 +2,21 @@ version: "3.13.2"
 
 services:
   kedro:
-    # image: rgojard/tp-orchestration-ml:latest
-    # container_name: back-end
-    build:
-      context: ./kedro-road-sign
-      dockerfile: Dockerfile
+    image: rgojard/kedro-road-sign:latest
+    container_name: back-end
     volumes:
       - ./kedro-road-sign:/app
     ports:
       - "8000:8000"
     environment:
       - KEDRO_ENV=local # =development
-    depends_on:
-      - kedro
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    image: rgojard/road-sign-frontend:latest
+    container_name: front-end
     ports:
       - "80:80"
     volumes:
       - ./frontend:/usr/share/nginx/html
+    depends_on:
+      - kedro
