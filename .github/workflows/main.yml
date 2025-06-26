@@ -28,6 +28,7 @@ jobs:
 
       - name: Run tests with coverage
         run: |
+          cd kedro-road-sign
           pytest
 
       - name: Build Docker image for kedro

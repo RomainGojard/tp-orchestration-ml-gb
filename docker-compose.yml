@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  kedro:
+    build:
+      context: ./kedro-road-sign
+      dockerfile: Dockerfile
+    volumes:
+      - ./kedro-road-sign:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - KEDRO_ENV=local
+    depends_on:
+      - kedro
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html
