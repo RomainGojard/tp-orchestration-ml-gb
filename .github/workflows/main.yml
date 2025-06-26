@@ -30,10 +30,15 @@ jobs:
         run: |
           pytest
 
-      - name: Build Docker image
+      - name: Build Docker image for kedro
         run: |
           cd kedro-road-sign
           docker build -t rgojard/kedro-road-sign:latest .
+
+      - name: Build Docker image for frontend
+        run: |
+          cd frontend
+          docker build -t rgojard/road-sign-frontend:latest .
 
       - name: Login to DockerHub
         if: success() # on ne se connecte que si les tests ont reussi
@@ -44,3 +49,4 @@ jobs:
         if: success() # on ne push que si success 
         run: |
           docker push rgojard/kedro-road-sign:latest
+          docker push rgojard/road-sign-frontend:latest
