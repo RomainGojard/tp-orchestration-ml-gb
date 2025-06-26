@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: yolov8-10-ocr-deployment # À renommer si besoin
+  name: yolov8-10-ocr-deployment
   labels:
-    app: yolov8-ocr # Label cohérent avec service & HPA
+    app: yolov8-ocr
 spec:
-  replicas: 1 # Nombre initial de pods
+  replicas: 1
   selector:
     matchLabels:
       app: yolov8-ocr
@@ -16,25 +16,25 @@ spec:
     spec:
       containers:
       - name: yolov8-ocr-container
-        image: rgojard/kedro-road-sign:latest # Ex. youruser/yolov8-10_ocr_app:latest
+        image: rgojard/kedro-road-sign:latest
         ports:
-        - containerPort: 5000 # Port exposé par l’application Flask
+        - containerPort: 5000
         resources:
           requests:
             cpu: "200m"
             memory: "512Mi"
-            limits:
-              cpu: "500m"
-              memory: "1Gi"
+          limits:
+            cpu: "500m"
+            memory: "1Gi"
         readinessProbe:
-        httpGet:
-          path: /health
-          port: 5000
-          initialDelaySeconds: 5 # attendre 5 s avant 1ʳᵉ vérif.
-          periodSeconds: 10 # vérification toutes les 10 s
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 10
         livenessProbe:
           httpGet:
             path: /health
             port: 5000
-          initialDelaySeconds: 15 # attendre 15 s avant 1ʳᵉ vérif.
-          periodSeconds: 20 # vérification toutes les 20 s
+          initialDelaySeconds: 15
+          periodSeconds: 20

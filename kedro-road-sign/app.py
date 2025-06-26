@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from kedro.framework.context import KedroContext
 from kedro.framework.hooks import _create_hook_manager
 from kedro.framework.startup import bootstrap_project
@@ -9,6 +10,7 @@ from werkzeug.utils import secure_filename
 from datetime import datetime
 
 app = Flask(__name__)
+CORS(app)
 
 # Configuration de base
 KEDRO_PROJECT_NAME = "kedro-road-sign"
