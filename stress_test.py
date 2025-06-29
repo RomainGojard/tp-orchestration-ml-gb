@@ -12,7 +12,7 @@ from PIL import Image
 # ------------------------------
 # Configuration à adapter
 # ------------------------------
-URL = "http://<VOTRE_URL>:80/predict" # Ex. obtenu via `minikube service --url`
+URL = "http://10.244.0.34:8000  :80/predict" # Ex. obtenu via `minikube service --url`
 IMAGE_PATH = "test_image.jpg"
 NUM_REQUESTS = 100
 MAX_WORKERS = 10
