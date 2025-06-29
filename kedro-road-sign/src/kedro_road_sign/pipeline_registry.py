@@ -29,7 +29,7 @@ def register_pipelines() -> dict[str, Pipeline]:
     pipelines["use_cases"] = pipelines["predict_yolo"] + pipelines["write_label_files"] + pipelines["OCR"]
     pipelines["model_training"] = pipelines["train"] + pipelines["evaluate_yolo"]
     pipelines["prediction"] = pipelines["predict_yolo"] + pipelines["write_label_files"] + pipelines["OCR_api"]
-    pipelines[run_default := "default"] = (
+    pipelines["__default__"] = (
         pipelines["train"]
         + pipelines["evaluate_yolo"]
         + pipelines["predict_yolo"]
