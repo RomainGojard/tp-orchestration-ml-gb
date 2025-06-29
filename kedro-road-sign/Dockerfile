@@ -15,10 +15,10 @@ RUN uv pip install --system --no-cache-dir -r /tmp/requirements.txt && rm -f /tm
 ARG KEDRO_UID=999
 ARG KEDRO_GID=0
 RUN groupadd -f -g ${KEDRO_GID} kedro_group && \
-    useradd -m -d /home/kedro_docker -s /bin/bash -g ${KEDRO_GID} -u ${KEDRO_UID} kedro_docker
+    useradd -m -d /home/kedro_road_sign -s /bin/bash -g ${KEDRO_GID} -u ${KEDRO_UID} kedro_road_sign
 
-WORKDIR /home/kedro_docker
-USER kedro_docker
+WORKDIR /home/kedro_road_sign
+USER kedro_road_sign
 
 FROM runtime-environment
 

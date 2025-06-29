@@ -52,6 +52,7 @@ def run_pipeline():
         # Exécution de Kedro
         try:
             project_path = os.getcwd()
+            print(f"Project path: {project_path}")
             bootstrap_project(project_path)
             configure_project(KEDRO_PROJECT_NAME)
 
