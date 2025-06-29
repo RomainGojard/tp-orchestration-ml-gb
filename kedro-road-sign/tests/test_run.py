@@ -11,12 +11,3 @@ from kedro.framework.startup import bootstrap_project
 # The tests below are here for the demonstration purpose
 # and should be replaced with the ones testing the project
 # functionality
-
-class TestKedroRun:
-    def test_kedro_run(self):
-        bootstrap_project(Path.cwd())
-
-        #with KedroSession.create(project_path=Path.cwd()) as session:
-            #assert session.run() is not None
-            
-        assert True, "This is a placeholder test."
