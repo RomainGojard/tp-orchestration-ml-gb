@@ -85,6 +85,16 @@ def evaluate_ocr(rois: Dict, lang: str) -> Dict:
     for roi in rois:
         image = cv2.imread(roi['image'])
         text = pytesseract.image_to_string(image, lang=lang).strip()
+        # sauvegarder les résultats dans un nouveau fichier texte que l'on créera dans le dossier 07_model_output/ocr_results
+        if not text:
+            text = "No text found"
+        # Créer le dossier s'il n'existe pas
+        Path("07_model_output/ocr_results").mkdir(parents=True, exist_ok=True)
+        # Enregistrer le texte dans un fichier
+        text_file_path = f"07_model_output/ocr_results/{Path(roi['image']).stem}.txt"
+        with open(text_file_path, 'w') as f:
+            f.write(f"Image: {roi['image']}, Predicted: {text}, Ground Truth: {roi['label']}, width: {roi['roi'][2]}, height: {roi['roi'][3]}, x: {roi['roi'][0]}, y: {roi['roi'][1]}")
+
         print(f"Image: {roi['image']}, Predicted: {text}, Ground Truth: {roi['label']}, width: {roi['roi'][2]}, height: {roi['roi'][3]}, x: {roi['roi'][0]}, y: {roi['roi'][1]}")
         predictions.append(text)
         ground_truth =  roi['label'].strip()

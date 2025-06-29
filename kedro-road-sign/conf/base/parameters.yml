@@ -12,6 +12,8 @@ labels_use_case_path: "data/01_raw/labels/use_case"
 
 # param for images
 images_path: "data/01_raw/images/use_case"
+# param for api images
+image_api_path: "data/01_raw/images/user_uploads"
 
 # images_path_ocr
 images_path_ocr: "data/01_raw/images/use_case"

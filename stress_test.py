@@ -9,12 +9,14 @@ import time
 import requests
 from io import BytesIO
 from PIL import Image
+import os
+
 # ------------------------------
 # Configuration à adapter
 # ------------------------------
-URL = "http://10.244.0.34:8000  :80/predict" # Ex. obtenu via `minikube service --url`
-IMAGE_PATH = "test_image.jpg"
-NUM_REQUESTS = 100
+URL = "http://localhost:80/run-pipeline" # Ex. obtenu via `minikube service --url`
+IMAGE_PATH = "/Users/romaingojard/Desktop/M2_ESGI/orchestrationML/tp-orchestration-ml-gb/test_image.png"
+NUM_REQUESTS = 1#00
 MAX_WORKERS = 10
 # ------------------------------
 

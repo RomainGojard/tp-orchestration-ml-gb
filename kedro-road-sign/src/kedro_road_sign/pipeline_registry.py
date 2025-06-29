@@ -22,7 +22,8 @@ def register_pipelines() -> dict[str, Pipeline]:
         "predict_yolo": predict_yolo_pipeline.create_pipeline(),
         "write_label_files": write_label_files_pipeline.create_pipeline(),
     }
-    pipelines["prediction"] = pipelines["predict_yolo"] + pipelines["write_label_files"] + pipelines["OCR"]
+    pipelines["use_cases"] = pipelines["predict_yolo"] + pipelines["write_label_files"] + pipelines["OCR"]
     pipelines["model_training"] = pipelines["train"] + pipelines["evaluate_yolo"]
+    pipelines["prediction"] = pipelines["predict_yolo"] + pipelines["write_label_files"] + pipelines["OCR"]
 
     return pipelines

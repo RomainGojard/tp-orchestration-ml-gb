@@ -47,6 +47,12 @@ def run_pipeline():
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         saved_filename = f"{timestamp}_{filename}"
         filepath = os.path.join(app.config["UPLOAD_FOLDER"], saved_filename)
+        #remove all other files in the upload folder
+        for f in os.listdir(app.config["UPLOAD_FOLDER"]):
+            file_path = os.path.join(app.config["UPLOAD_FOLDER"], f)
+            if os.path.isfile(file_path) and f != saved_filename:
+                os.remove(file_path)
+        # Enregistrement du fichier uploadé
         file.save(filepath)
 
         # Exécution de Kedro
@@ -65,11 +71,16 @@ def run_pipeline():
             with KedroSession.create() as session:
                 context = session.load_context()
                 session.run(pipeline_name=pipeline_name)
+                
+            if pipeline_name == "use_cases":
+                # renvoyer les résultats de la prédiction YOLO
+                yolo_predict_output_file = f"data/07_model_output/ocr_results/{saved_filename.split('.')[0]}.txt"
 
             return jsonify({
                 "status": "Pipeline executed successfully",
                 "pipeline": pipeline_name,
-                "saved_file": saved_filename
+                "saved_file": saved_filename,
+                "yolo_predict_output": yolo_predict_output_file if pipeline_name == "use_cases" else None
             })
 
         except Exception as e:
