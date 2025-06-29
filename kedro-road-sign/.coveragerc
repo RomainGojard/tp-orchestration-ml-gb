@@ -1,3 +1,5 @@
 [run]
 omit =
     src/kedro_road_sign/__main__.py
+    src/kedro_road_sign/settings.py
+    src/kedro_road_sign/pipeline_registry.py
