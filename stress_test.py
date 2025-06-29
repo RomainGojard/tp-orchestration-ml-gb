@@ -14,21 +14,24 @@ import os
 # ------------------------------
 # Configuration à adapter
 # ------------------------------
-URL = "http://localhost:80/run-pipeline" # Ex. obtenu via `minikube service --url`
-IMAGE_PATH = "/Users/romaingojard/Desktop/M2_ESGI/orchestrationML/tp-orchestration-ml-gb/test_image.png"
-NUM_REQUESTS = 1#00
+URL = "http://localhost:8000/run-pipeline" # Ex. obtenu via `minikube service --url`
+IMAGE_PATH = "/Users/romaingojard/Desktop/M2_ESGI/orchestrationML/tp-orchestration-ml-gb/test_image1.jpg"
+NUM_REQUESTS = 100
 MAX_WORKERS = 10
 # ------------------------------
 
 def send_request(_):
-  """Charge l'image et poste vers l'API."""
-  with Image.open(IMAGE_PATH) as img:
+  """Charge l'image et poste vers l'API avec le payload de la bonne pipeline."""
+  url = "https://m1.direct-signaletique.com/30023-thickbox_default/panneau-d-entree-de-ville-eb10-2-lignes-de-texte-hauteur-de-caracteres-100-mm.jpg"
+  response = requests.get(url)
+  with Image.open(BytesIO(response.content)) as img:
     buf = BytesIO()
     img.save(buf, format='JPEG')
     buf.seek(0)
     files = {'file': ('test_image.jpg', buf, 'image/jpeg')}
+    data = {'pipeline_name': 'prediction'}
     start = time.time()
-    resp = requests.post(URL, files=files)
+    resp = requests.post(URL, files=files, data=data)
     latency = time.time() - start
   return resp.status_code, latency
 

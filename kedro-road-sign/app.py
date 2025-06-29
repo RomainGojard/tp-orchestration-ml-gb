@@ -72,15 +72,31 @@ def run_pipeline():
                 context = session.load_context()
                 session.run(pipeline_name=pipeline_name)
                 
-            if pipeline_name == "use_cases":
+            if pipeline_name == "prediction":
                 # renvoyer les résultats de la prédiction YOLO
                 yolo_predict_output_file = f"data/07_model_output/ocr_results/{saved_filename.split('.')[0]}.txt"
-
+                # read conten of the yolo_predict_output_file
+                if os.path.exists(yolo_predict_output_file):
+                    with open(yolo_predict_output_file, 'r') as f:
+                        yolo_predict_output = f.read()
+                else:
+                    yolo_predict_output = "No predictions found"
+            elif pipeline_name == "use_cases":
+                # renvoyer les résultats de la prédiction YOLO
+                yolo_predict_output_file = f"data/07_model_output/ocr_results/use_case.txt"
+                # read conten of the yolo_predict_output_file
+                if os.path.exists(yolo_predict_output_file):
+                    with open(yolo_predict_output_file, 'r') as f:
+                        yolo_predict_output = f.read()
+                else:
+                    yolo_predict_output = "No predictions found"
+                    
             return jsonify({
                 "status": "Pipeline executed successfully",
                 "pipeline": pipeline_name,
                 "saved_file": saved_filename,
-                "yolo_predict_output": yolo_predict_output_file if pipeline_name == "use_cases" else None
+                "yolo_predict_output": yolo_predict_output if pipeline_name == "use_cases" or pipeline_name == "prediction" else "N/A",
+                "file_path": filepath
             })
 
         except Exception as e:
