@@ -51,12 +51,18 @@ def run_pipeline():
 
         # Exécution de Kedro
         try:
-            project_path = os.getcwd()
-            print(f"Project path: {project_path}")
-            bootstrap_project(project_path)
-            configure_project(KEDRO_PROJECT_NAME)
+            project_path = "/home/kedro_road_sign"
+            os.chdir(project_path)  # ✅ Forcer le bon contexte
 
-            with KedroSession.create(KEDRO_PROJECT_NAME) as session:
+            bootstrap_project(project_path)
+
+            # ✅ Récupération du nom du projet dynamiquement
+            import importlib
+            pyproject = importlib.import_module("kedro_road_sign")
+            configure_project(pyproject.__name__)
+
+            # ✅ Création de session sans nom (détection auto)
+            with KedroSession.create() as session:
                 context = session.load_context()
                 session.run(pipeline_name=pipeline_name)
 
@@ -68,6 +74,7 @@ def run_pipeline():
 
         except Exception as e:
             return jsonify({"error": str(e)}), 500
+    
     else:
         return jsonify({"error": "File type not allowed"}), 400
 

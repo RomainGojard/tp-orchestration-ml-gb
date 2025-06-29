@@ -1,5 +1,5 @@
-train: /Users/romaingojard/Desktop/M2_ESGI/orchestrationML/tp-orchestration-ml-gb/kedro-road-sign/data/01_raw/images/train
-val: /Users/romaingojard/Desktop/M2_ESGI/orchestrationML/tp-orchestration-ml-gb/kedro-road-sign/data/01_raw/images/val
+train: images/train
+val: images/val
 
 nc: 43
 names: [

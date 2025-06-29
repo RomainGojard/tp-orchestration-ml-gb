@@ -1,11 +1,14 @@
 ARG BASE_IMAGE=python:3.13.2
 FROM $BASE_IMAGE as runtime-environment
 
-RUN apt-get update && apt-get install -y libgl1
+RUN apt-get update && \
+    apt-get install -y libgl1 tesseract-ocr tesseract-ocr-fra tesseract-ocr-eng && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # update pip and install uv
 RUN python -m pip install -U "pip>=21.2"
 RUN pip install uv
+RUN tesseract --version
 
 # install project requirements
 COPY requirements.txt /tmp/requirements.txt
@@ -27,7 +30,6 @@ ARG KEDRO_UID=999
 ARG KEDRO_GID=0
 COPY --chown=${KEDRO_UID}:${KEDRO_GID} . .
 
-#CMD ["sh", "-c", "kedro run"]
 CMD ["python", "app.py"]
 
 EXPOSE 8000

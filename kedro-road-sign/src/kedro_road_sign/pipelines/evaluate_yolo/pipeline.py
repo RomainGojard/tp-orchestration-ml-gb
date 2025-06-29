@@ -7,7 +7,7 @@ def create_pipeline(**kwargs) -> Pipeline:
             func=evaluate_yolov8,
             inputs=dict(
                 model_path="params:trained_model_path",  # un fichier .pt
-                data_yaml_path="params:data_yaml_path"  # un fichier YAML
+                data_yaml_path="params:data_config_path"  # un fichier YAML
             ),
             outputs="yolo_evaluation_metrics",
             name="evaluate_yolov8_node",

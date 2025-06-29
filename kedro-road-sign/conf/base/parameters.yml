@@ -22,7 +22,7 @@ images_path_preprocessed: "data/05_model_input/images_preprocessed"
 images_yolo_predict_input_path: "data/01_raw/images/val"
 
 # cmd local path
-cmd_local_path: "/opt/homebrew/bin/tesseract"
+cmd_local_path: "/usr/bin/tesseract"
 
 # model path
 model_path: "data/06_models/best.pt"
