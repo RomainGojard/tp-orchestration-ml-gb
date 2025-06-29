@@ -13,7 +13,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Configuration de base
-KEDRO_PROJECT_NAME = "kedro-road-sign"
+KEDRO_PROJECT_NAME = "kedro_road_sign"
 UPLOAD_FOLDER = os.path.join("data", "01_raw", "images", "user_uploads")
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
 
