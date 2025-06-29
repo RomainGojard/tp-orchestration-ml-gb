@@ -3,6 +3,7 @@ import numpy as np
 import cv2
 from pathlib import Path
 from src.kedro_road_sign.pipelines.OCR_api.nodes import *
+
 def test_grayscale():
     img = np.ones((10, 10, 3), dtype=np.uint8) * 255
     gray = grayscale(img)
